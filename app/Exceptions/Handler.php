@@ -2,8 +2,13 @@
 
 namespace App\Exceptions;
 
+use App\Enums\ErrCode;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use RedisException;
 
 class Handler extends ExceptionHandler
 {
@@ -31,7 +36,7 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      * @return void
      */
     public function report(Exception $exception)
@@ -39,15 +44,57 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request, Exception $exception)
+    public function render($request, Exception $e)
     {
-        return parent::render($request, $exception);
+        $response = parent::render($request, $e);
+        $msg = $e->getMessage();
+        if (empty($msg)) {
+            $msg = ErrCode::getDescription($response->getStatusCode());
+        }
+
+        $result = [
+            'code' => $response->getStatusCode(),
+            'msg' => $msg,
+            'data' => (object)null,
+        ];
+
+        switch (true) {
+            // 字段验证异常
+            case $e instanceof ValidationException:
+                /** @var ValidationException $e */
+                $errors = $e->errors();
+                $error = reset($errors);
+                if ($error) {
+                    $result['msg'] = $error[0];
+                }
+                break;
+
+            // 模型不存在异常
+            case $e instanceof ModelNotFoundException:
+                $result['code'] = ErrCode::DATA_NOT_FOUND;
+                $result['msg'] = ErrCode::getDescription(ErrCode::DATA_NOT_FOUND);
+                break;
+
+            // 业务异常
+            case $e instanceof CException:
+                $msg = $e->getMessage();
+                if ($msg) {
+                    $result['msg'] = $msg;
+                }
+                break;
+
+            case $e instanceof RedisException:
+                return response('redis connection error', 500);
+
+            case $e instanceof AuthenticationException:
+                $result['code'] = ErrCode::UNAUTHORIZED;
+                $result['msg'] = ErrCode::getDescription(ErrCode::UNAUTHORIZED);
+                break;
+
+            default:
+                break;
+        }
+
+        return response()->json($result);
     }
 }
