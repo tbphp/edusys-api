@@ -6,7 +6,9 @@ use App\Enums\ErrCode;
 use App\Exceptions\CException;
 use App\Http\Requests\SchoolTeacherStoreRequest;
 use App\Models\School;
+use App\Models\Student;
 use App\Models\Teacher;
+use Illuminate\Support\Facades\Auth;
 
 class SchoolTeacherController extends Controller
 {
@@ -14,10 +16,17 @@ class SchoolTeacherController extends Controller
      * 验证学校管理员权限
      *
      * @param School $school
+     * @param bool $allowStudent 是否运行学生
      * @return void
      */
-    protected function _checkOwner(School $school)
+    protected function _checkOwner(School $school, bool $allowStudent = false)
     {
+        // 允许学生
+        if ($allowStudent && Auth::user() instanceof Student) {
+            return;
+        }
+
+        // 验证管理员
         if (!$school->is_owner) {
             throw new CException(ErrCode::HTTP_AUTHORIZATION);
         }
@@ -25,7 +34,7 @@ class SchoolTeacherController extends Controller
 
     public function index(School $school)
     {
-        $this->_checkOwner($school);
+        $this->_checkOwner($school, true);
 
         return $school->teachers()->paginate();
     }

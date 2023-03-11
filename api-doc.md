@@ -1,6 +1,8 @@
 # 接口文档
 
-接口请求入参和返回数据都使用`JSON`格式，并且返回为固定格式：
+## 数据格式
+
+接口请求入参和返回数据都使用`JSON`，并且返回为固定格式：
 
 ```json
 {
@@ -18,6 +20,11 @@
 |  code   |  int   | 返回码，见[返回码](#返回码) |
 | message | string |  返回信息，用于详细的错误描述  |
 |  data   | object |       返回数据       |
+
+## 用户认证
+
+- 使用[登录](#登录)接口获取访问令牌。
+- 需要认证的接口需要在Header里面传入 `Authorization: Bearer {access_token}`。
 
 ## 返回码
 
@@ -184,7 +191,7 @@
 
 ### 修改学校名称
 
-> `PUT` /v1/teacher/schools/{school_id} (需要认证)
+> `PUT` /v1/teacher/schools/{school_id} (需要认证)  
 > 仅该学校管理员可操作
 
 **入参：**
@@ -195,43 +202,43 @@
 
 ### 删除学校
 
-> `DELETE` /v1/teacher/schools/{school_id} (需要认证)
+> `DELETE` /v1/teacher/schools/{school_id} (需要认证)  
 > 仅该学校管理员可操作
 
 ### 学校页面老师列表
 
-> `GET` /v1/teacher/schools/{school_id}/teachers (需要认证)
+> `GET` /v1/teacher/schools/{school_id}/teachers (需要认证)  
 > 仅该学校管理员可操作
 
 **返回：**
 
 ```json
 {
-    "code": 200,
-    "msg": "success",
-    "data": {
-        "list": [
-            {
-                "id": 1,
-                "name": "唐波",
-                "username": "admin@tbphp.net",
-                "created_at": 1678520081,
-                "updated_at": 1678520081
-            }
-        ],
-        "total": 1,
-        "current_page": 1,
-        "last_page": 1,
-        "per_page": 15,
-        "from": 1,
-        "to": 1
-    }
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "唐波",
+        "username": "admin@tbphp.net",
+        "created_at": 1678520081,
+        "updated_at": 1678520081
+      }
+    ],
+    "total": 1,
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 15,
+    "from": 1,
+    "to": 1
+  }
 }
 ```
 
 ### 学校页面邀请老师
 
-> `POST` /v1/teacher/schools/{school_id}/teachers (需要认证)
+> `POST` /v1/teacher/schools/{school_id}/teachers (需要认证)  
 > 仅该学校管理员可操作
 
 **入参：**
@@ -242,8 +249,95 @@
 
 ### 学校页面移除老师
 
-> `DELETE` /v1/teacher/schools/{school_id}/teachers/{teacher_id} (需要认证)
+> `DELETE` /v1/teacher/schools/{school_id}/teachers/{teacher_id} (需要认证)  
 > 仅该学校管理员可操作
 
+### 学校页面学生列表
+
+> `GET` /v1/teacher/schools/{school_id}/students (需要认证)
+
+**返回：**
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "张三",
+        "username": "zhangsan",
+        "created_at": 1678554543,
+        "updated_at": 1678554545
+      }
+    ],
+    "total": 1,
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 15,
+    "from": 1,
+    "to": 1
+  }
+}
+```
+
+### 学校页面创建学生
+
+> `POST` /v1/teacher/schools/{school_id}/students (需要认证)  
+> 仅该学校管理员可操作
+
+**入参：**
+
+|    字段    |   类型   |      说明       |
+|:--------:|:------:|:-------------:|
+| username | string | 用户名。必填，4-50长度 |
+|   name   | string | 名称。必填，4-50长度  |
+
+**返回：**
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "password": "ruy58q"
+  }
+}
+```
+
+> 注：创建用户时，后端会随机生成密码，前端应该弹窗提示并通知学生。  
+> 该密码只展示一次，如果遗忘则需要[重置密码](#学校页面重置学生密码)
+
+### 学校页面修改学生名称
+
+> `PUT` /v1/teacher/schools/{school_id}/students/{student_id} (需要认证)  
+> 仅该学校管理员可操作
+
+|    字段    |   类型   |      说明       |
+|:--------:|:------:|:-------------:|
+|   name   | string | 名称。必填，4-50长度  |
+
+### 学校页面删除学生
+
+> `DELETE` /v1/teacher/schools/{school_id}/students/{student_id} (需要认证)  
+> 仅该学校管理员可操作
+
+### 学校页面重置学生密码
+
+> `PUT` /v1/teacher/schools/{school_id}/students/{student_id}/reset_password (需要认证)  
+> 仅该学校管理员可操作
+
+**返回：**
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "password": "ruy58q"
+  }
+}
+```
 
 ## 学生
