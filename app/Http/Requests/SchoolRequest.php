@@ -9,7 +9,7 @@ class SchoolRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:4|max:50',
+            'name' => 'required|string|min:2|max:50',
         ];
     }
 

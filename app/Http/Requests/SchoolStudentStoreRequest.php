@@ -10,7 +10,7 @@ class SchoolStudentStoreRequest extends FormRequest
     {
         return [
             'username' => 'required|string|min:4|max:50|unique:students',
-            'name' => 'required|string|min:4|max:50',
+            'name' => 'required|string|min:2|max:50',
         ];
     }
 
