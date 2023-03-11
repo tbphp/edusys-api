@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ErrCode;
+use App\Enums\SchoolStatusEnum;
 use App\Exceptions\CException;
 use App\Http\Requests\SchoolTeacherStoreRequest;
 use App\Models\School;
@@ -21,6 +22,11 @@ class SchoolTeacherController extends Controller
      */
     protected function _checkOwner(School $school, bool $allowStudent = false)
     {
+        // 检查状态
+        if (SchoolStatusEnum::NORMAL !== $school->status) {
+            throw new CException('该学校状态异常');
+        }
+
         // 允许学生
         if ($allowStudent && Auth::user() instanceof Student) {
             return;
