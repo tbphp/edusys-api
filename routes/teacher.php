@@ -15,5 +15,12 @@ Route::post('register', 'AuthController@teacherRegister');
 |--------------------------------------------------------------------------
 */
 Route::group(['middleware' => 'auth:teacher'], function () {
-    Route::apiResource('schools', 'SchoolsController');
+    // 学校管理
+    Route::apiResource('schools', 'SchoolController');
+
+    // 学校老师管理
+    Route::apiResource('schools.teachers', 'SchoolTeacherController')->except(['show', 'update']);
+
+    // 学校学生管理
+    Route::apiResource('schools.students', 'SchoolStudentController');
 });

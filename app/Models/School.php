@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\SchoolStatusEnum;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,7 @@ class School extends Model
     use SoftDeletes;
 
     protected $hidden = [
-        'deleted_at', 'owner_id',
+        'owner_id',
     ];
 
     protected $casts = [
@@ -28,6 +29,11 @@ class School extends Model
     public function teachers(): BelongsToMany
     {
         return $this->belongsToMany(Teacher::class);
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
     }
 
     public function owner(): BelongsTo

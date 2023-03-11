@@ -11,8 +11,9 @@ use App\Models\School;
 use App\Models\Teacher;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-class SchoolsController extends Controller
+class SchoolController extends Controller
 {
     protected function _teacher(): Teacher
     {
@@ -70,6 +71,10 @@ class SchoolsController extends Controller
             throw new CException(ErrCode::HTTP_AUTHORIZATION);
         }
 
-        $school->delete();
+        DB::transaction(function () use ($school) {
+            $school->teachers()->detach();
+            $school->students()->delete();
+            $school->delete();
+        });
     }
 }

@@ -198,4 +198,52 @@
 > `DELETE` /v1/teacher/schools/{school_id} (需要认证)
 > 仅该学校管理员可操作
 
+### 学校页面老师列表
+
+> `GET` /v1/teacher/schools/{school_id}/teachers (需要认证)
+> 仅该学校管理员可操作
+
+**返回：**
+
+```json
+{
+    "code": 200,
+    "msg": "success",
+    "data": {
+        "list": [
+            {
+                "id": 1,
+                "name": "唐波",
+                "username": "admin@tbphp.net",
+                "created_at": 1678520081,
+                "updated_at": 1678520081
+            }
+        ],
+        "total": 1,
+        "current_page": 1,
+        "last_page": 1,
+        "per_page": 15,
+        "from": 1,
+        "to": 1
+    }
+}
+```
+
+### 学校页面邀请老师
+
+> `POST` /v1/teacher/schools/{school_id}/teachers (需要认证)
+> 仅该学校管理员可操作
+
+**入参：**
+
+|    字段    |   类型   |     说明     |
+|:--------:|:------:|:----------:|
+| username | string | 被邀请人的邮箱。必填 |
+
+### 学校页面移除老师
+
+> `DELETE` /v1/teacher/schools/{school_id}/teachers/{teacher_id} (需要认证)
+> 仅该学校管理员可操作
+
+
 ## 学生
