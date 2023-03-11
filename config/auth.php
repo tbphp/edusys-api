@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\GuardEnum;
+
 return [
 
     /*
@@ -14,8 +16,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'api',
-        'passwords' => 'users',
+        'guard' => GuardEnum::TEACHER,
     ],
 
     /*
@@ -36,13 +37,13 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-        'api' => [
+        GuardEnum::TEACHER => [
             'driver' => 'passport',
-            'provider' => 'users',
+            'provider' => 'teachers',
+        ],
+        GuardEnum::STUDENT => [
+            'driver' => 'passport',
+            'provider' => 'students',
         ],
     ],
 
@@ -64,32 +65,13 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'teachers' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Teacher::class,
         ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Resetting Passwords
-    |--------------------------------------------------------------------------
-    |
-    | You may specify multiple password reset configurations if you have more
-    | than one user table or model in the application and you want to have
-    | separate password reset settings based on the specific user types.
-    |
-    | The expire time is the number of minutes that the reset token should be
-    | considered valid. This security feature keeps tokens short-lived so
-    | they have less time to be guessed. You may change this as needed.
-    |
-    */
-
-    'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => 'password_resets',
-            'expire' => 60,
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student::class,
         ],
     ],
 

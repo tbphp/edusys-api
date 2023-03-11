@@ -2,6 +2,6 @@
 
 namespace App\Models;
 
-class User extends AuthModel
+class Teacher extends AuthModel
 {
 }

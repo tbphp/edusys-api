@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use RedisException;
 
 class Handler extends ExceptionHandler
@@ -41,6 +42,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if ($exception instanceof OAuthServerException) {
+            return;
+        }
+
         parent::report($exception);
     }
 

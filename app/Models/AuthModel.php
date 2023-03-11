@@ -19,7 +19,7 @@ abstract class AuthModel extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username', 'password',
     ];
 
     /**
@@ -28,7 +28,7 @@ abstract class AuthModel extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
     ];
 
     protected function serializeDate(DateTimeInterface $date): int
