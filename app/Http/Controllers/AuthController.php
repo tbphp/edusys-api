@@ -51,6 +51,7 @@ class AuthController extends Controller
         return [
             'token_type' => 'bearer',
             'access_token' => $token->accessToken,
+            'name' => $user->name
         ];
     }
 
@@ -72,6 +73,7 @@ class AuthController extends Controller
         return [
             'token_type' => 'bearer',
             'access_token' => $token->accessToken,
+            'name' => $teacher->name,
         ];
     }
 }
