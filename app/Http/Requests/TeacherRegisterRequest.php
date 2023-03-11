@@ -11,7 +11,7 @@ class TeacherRegisterRequest extends FormRequest
         return [
             'name' => 'required|string',
             'username' => 'required|email|unique:teachers',
-            'password' => 'required|string',
+            'password' => 'required|string|min:6|max:32',
         ];
     }
 
