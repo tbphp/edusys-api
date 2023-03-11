@@ -182,11 +182,8 @@
   "data": {
     "id": 1,
     "name": "川大",
-    "status": 2,
-    "reject_reason": "",
     "created_at": 1678548854,
     "updated_at": 1678548856,
-    "status_text": "正常",
     "is_owner": true
   }
 }
@@ -339,6 +336,58 @@
   "msg": "success",
   "data": {
     "password": "ruy58q"
+  }
+}
+```
+
+### 粉丝列表
+
+> `GET` /v1/teacher/fans (需要认证)
+
+**返回：**
+
+```json
+{
+    "code": 200,
+    "msg": "success",
+    "data": {
+        "list": [
+            {
+                "id": 1,
+                "name": "张三",
+                "username": "zhangsan",
+                "created_at": 1678554543,
+                "updated_at": 1678554545,
+                "school": {
+                    "id": 1,
+                    "name": "川大",
+                    "created_at": 1678548854,
+                    "updated_at": 1678548856
+                }
+            }
+        ],
+        "total": 2,
+        "current_page": 1,
+        "last_page": 1,
+        "per_page": 15,
+        "from": 1,
+        "to": 2
+    }
+}
+```
+
+### 粉丝数量
+
+> `GET` /v1/teacher/fans/count (需要认证)
+
+**返回：**
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "count": 2
   }
 }
 ```

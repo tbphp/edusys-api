@@ -10,4 +10,14 @@ class Teacher extends AuthModel
     {
         return $this->belongsToMany(School::class);
     }
+
+    /**
+     * 粉丝学生
+     *
+     * @return BelongsToMany
+     */
+    public function fans(): BelongsToMany
+    {
+        return $this->belongsToMany(Student::class, 'follows');
+    }
 }

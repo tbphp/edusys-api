@@ -26,4 +26,8 @@ Route::group(['middleware' => 'auth:teacher'], function () {
     Route::apiResource('schools.students', 'SchoolStudentController')
         ->except('show');
     Route::put('schools/{school}/students/{student}/reset_password', 'SchoolStudentController@resetPassword');
+
+    // 粉丝
+    Route::get('fans', 'FollowController@fans');
+    Route::get('fans/count', 'FollowController@fansCount');
 });

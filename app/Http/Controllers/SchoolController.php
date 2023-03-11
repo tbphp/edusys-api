@@ -27,7 +27,8 @@ class SchoolController extends Controller
 
         // 判断登录用户是否管理员
         $result->map(function (School $school) use ($teacher) {
-            $school->append('is_owner');
+            $school->makeVisible(['status', 'reject_reason']);
+            $school->append('is_owner', 'status_text');
         });
 
         return $result;

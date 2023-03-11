@@ -15,15 +15,13 @@ class School extends Model
 
     protected $hidden = [
         'owner_id',
+        'status',
+        'reject_reason',
     ];
 
     protected $casts = [
         'owner_id' => 'int',
         'status' => 'int',
-    ];
-
-    protected $appends = [
-        'status_text',
     ];
 
     public function teachers(): BelongsToMany
