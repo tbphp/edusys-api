@@ -1,8 +1,8 @@
 {
-  "name": "laravel/laravel",
-  "description": "The Laravel Framework.",
+  "name": "tbphp/edusys-backend",
+  "description": "Backend service for Education Management System.",
   "keywords": [
-    "framework",
+    "edusys",
     "laravel"
   ],
   "license": "MIT",
