@@ -41,7 +41,7 @@ class SchoolStudentController extends Controller
     {
         $this->_checkOwner($school);
 
-        $student = new Student($request->only(['nane', 'username']));
+        $student = new Student($request->only(['name', 'username']));
         $password = Str::random(6);
         $student->password = Hash::make($password);
         $student->school_id = $school->id;
