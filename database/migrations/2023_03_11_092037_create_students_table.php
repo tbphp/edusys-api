@@ -10,12 +10,12 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->string('name', 50);
+            $table->string('username', 100)->unique();
+            $table->string('password', 255);
             $table->unsignedInteger('school_id')->index('inx_school');
             $table->timestamps();
-
+            $table->softDeletes();
         });
         table_comment('students', '学生');
     }

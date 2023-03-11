@@ -15,7 +15,5 @@ Route::post('register', 'AuthController@teacherRegister');
 |--------------------------------------------------------------------------
 */
 Route::group(['middleware' => 'auth:teacher'], function () {
-    Route::get('test', function () {
-        return ['teacher test'];
-    });
+    Route::apiResource('schools', 'SchoolsController');
 });

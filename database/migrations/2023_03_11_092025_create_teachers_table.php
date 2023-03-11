@@ -10,9 +10,9 @@ class CreateTeachersTable extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->string('name', 50);
+            $table->string('username', 100)->unique();
+            $table->string('password', 255);
             $table->timestamps();
         });
         table_comment('teachers', '教师');

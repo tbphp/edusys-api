@@ -22,6 +22,7 @@
 ## 返回码
 
 - `401` 用户认证失败，登录错误或者token失效。
+- `403` 没有权限。
 - `404` 路由错误，接口不存在。
 - `410` 数据不存在。
 - `422` 字段验证失败。
@@ -86,9 +87,115 @@
 }
 ```
 
-|      字段      |   类型   |        说明         |
-|:------------:|:------:|:-----------------:|
-|  token_type  | string | 令牌类型，固定字符串，bearer |
-| access_token | string |      用户访问令牌       |
+### 学校列表
+
+> `GET` /v1/teacher/schools (需要认证)
+
+**Query:**
+
+|    字段    | 类型  |      说明      |
+|:--------:|:---:|:------------:|
+|   page   | int |  页码。可选，默认1   |
+| per_page | int | 每页行数。可选，默认15 |
+
+> 注：此处是列表接口通用query参数，后文中的列表接口不再重复说明。
+
+**返回：**
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "川大",
+        "status": 2,
+        "reject_reason": "",
+        "created_at": 1678548854,
+        "updated_at": 1678548856,
+        "status_text": "正常",
+        "is_owner": true
+      }
+    ],
+    "total": 1,
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 15,
+    "from": 1,
+    "to": 1
+  }
+}
+```
+
+|          字段          |   类型   |             说明              |
+|:--------------------:|:------:|:---------------------------:|
+|        total         |  int   |             总数量             |
+|     current_page     |  int   |            当前页码             |
+|      last_page       |  int   |            最后页数             |
+|       per_page       |  int   |           每页显示数量            |
+|         from         |  int   |           当前页开始id           |
+|          to          |  int   |           当前页结束id           |
+|         list         | array  |            数据列表             |
+|      list.*.id       |  int   |            主键ID             |
+|     list.*.name      | string |            学校编号             |
+|    list.*.status     |  int   | 学校状态：<br/> 1.待审核 2.正常 3.已驳回 |
+|  list.*.status_text  | string |          学校状态说明文字           |
+| list.*.reject_reason | string |            驳回原因             |
+|   list.*.is_owner    |  bool  |            是否管理员            |
+|  list.*.created_at   |  int   |            创建时间             |
+|  list.*.updated_at   |  int   |            更新时间             |
+
+> 注：此处已经标注分页以及常用字段说明，后面分页以及常用字段不再重复说明。
+
+### 创建学校
+
+> `POST` /v1/teacher/schools (需要认证)
+
+**入参：**
+
+|  字段  |   类型   |       说明       |
+|:----:|:------:|:--------------:|
+| name | string | 学校名称。必填，4-50长度 |
+
+### 学校详情
+
+> `GET` /v1/teacher/schools/{school_id} (需要认证)
+
+**返回：**
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "id": 1,
+    "name": "川大",
+    "status": 2,
+    "reject_reason": "",
+    "created_at": 1678548854,
+    "updated_at": 1678548856,
+    "status_text": "正常",
+    "is_owner": true
+  }
+}
+```
+
+### 修改学校名称
+
+> `PUT` /v1/teacher/schools/{school_id} (需要认证)
+> 仅该学校管理员可操作
+
+**入参：**
+
+|  字段  |   类型   |       说明       |
+|:----:|:------:|:--------------:|
+| name | string | 学校名称。必填，4-50长度 |
+
+### 擅长学校
+
+> `DELETE` /v1/teacher/schools/{school_id} (需要认证)
+> 仅该学校管理员可操作
 
 ## 学生
