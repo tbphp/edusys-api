@@ -8,6 +8,7 @@ use App\Enums\SchoolStatusEnum;
 use App\Exceptions\CException;
 use App\Http\Requests\SchoolRequest;
 use App\Models\School;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
@@ -77,5 +78,20 @@ class SchoolController extends Controller
             $school->students()->delete();
             $school->delete();
         });
+    }
+
+    /**
+     * 学生的学校
+     *
+     * @return School
+     */
+    public function studentSchool()
+    {
+        /** @var Student $student */
+        $student = Auth::guard(GuardEnum::STUDENT)->user();
+
+        return $student->school()
+            ->where('status', SchoolStatusEnum::NORMAL)
+            ->firstOrFail();
     }
 }

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ErrCode;
+use App\Enums\GuardEnum;
 use App\Enums\SchoolStatusEnum;
 use App\Exceptions\CException;
 use App\Http\Requests\SchoolTeacherStoreRequest;
 use App\Models\School;
 use App\Models\Student;
 use App\Models\Teacher;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Auth;
 
 class SchoolTeacherController extends Controller
@@ -17,19 +19,13 @@ class SchoolTeacherController extends Controller
      * 验证学校管理员权限
      *
      * @param School $school
-     * @param bool $allowStudent 是否运行学生
      * @return void
      */
-    protected function _checkOwner(School $school, bool $allowStudent = false)
+    protected function _checkOwner(School $school)
     {
         // 检查状态
         if (SchoolStatusEnum::NORMAL !== $school->status) {
             throw new CException('该学校状态异常');
-        }
-
-        // 允许学生
-        if ($allowStudent && Auth::user() instanceof Student) {
-            return;
         }
 
         // 验证管理员
@@ -40,7 +36,7 @@ class SchoolTeacherController extends Controller
 
     public function index(School $school)
     {
-        $this->_checkOwner($school, true);
+        $this->_checkOwner($school);
 
         return $school->teachers()->paginate();
     }
@@ -67,5 +63,27 @@ class SchoolTeacherController extends Controller
         $this->_checkOwner($school);
 
         $school->teachers()->detach($teacher);
+    }
+
+    public function studentList()
+    {
+        /** @var Student $student */
+        $student = Auth::guard(GuardEnum::STUDENT)->user();
+
+        $result = $student->school
+            ->teachers()
+            // 通过当前学生id预加载
+            ->with(['fans' => function (BelongsToMany $query) use ($student) {
+                $query->where('students.id', $student->id);
+            }])
+            ->paginate();
+
+        // 判断是否关注教师
+        $result->map(function (Teacher $teacher) {
+            $teacher['is_followed'] = $teacher->fans->isNotEmpty();
+            unset($teacher['fans']);
+        });
+
+        return $result;
     }
 }

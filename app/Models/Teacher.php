@@ -18,6 +18,6 @@ class Teacher extends AuthModel
      */
     public function fans(): BelongsToMany
     {
-        return $this->belongsToMany(Student::class, 'follows');
+        return $this->belongsToMany(Student::class, 'follows')->withTimestamps();
     }
 }

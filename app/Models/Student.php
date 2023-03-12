@@ -30,6 +30,6 @@ class Student extends AuthModel
      */
     public function followers(): BelongsToMany
     {
-        return $this->belongsToMany(Teacher::class, 'follows');
+        return $this->belongsToMany(Teacher::class, 'follows')->withTimestamps();
     }
 }

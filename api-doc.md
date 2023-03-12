@@ -348,31 +348,31 @@
 
 ```json
 {
-    "code": 200,
-    "msg": "success",
-    "data": {
-        "list": [
-            {
-                "id": 1,
-                "name": "张三",
-                "username": "zhangsan",
-                "created_at": 1678554543,
-                "updated_at": 1678554545,
-                "school": {
-                    "id": 1,
-                    "name": "川大",
-                    "created_at": 1678548854,
-                    "updated_at": 1678548856
-                }
-            }
-        ],
-        "total": 2,
-        "current_page": 1,
-        "last_page": 1,
-        "per_page": 15,
-        "from": 1,
-        "to": 2
-    }
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "张三",
+        "username": "zhangsan",
+        "created_at": 1678554543,
+        "updated_at": 1678554545,
+        "school": {
+          "id": 1,
+          "name": "川大",
+          "created_at": 1678548854,
+          "updated_at": 1678548856
+        }
+      }
+    ],
+    "total": 2,
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 15,
+    "from": 1,
+    "to": 2
+  }
 }
 ```
 
@@ -393,3 +393,65 @@
 ```
 
 ## 学生
+
+### 学校详情
+
+> `GET` /v1/student/school (需要认证)
+
+**返回：**
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "id": 1,
+    "name": "川大",
+    "created_at": 1678548854,
+    "updated_at": 1678548856
+  }
+}
+```
+
+### 教师列表
+
+> `GET` /v1/student/teachers (需要认证)
+
+**返回：**
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "name": "唐波",
+        "username": "admin@tbphp.net",
+        "created_at": 1678520081,
+        "updated_at": 1678520081,
+        "is_followed": true
+      }
+    ],
+    "total": 2,
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 15,
+    "from": 1,
+    "to": 2
+  }
+}
+```
+
+|     字段      |  类型  |   说明    |
+|:-----------:|:----:|:-------:|
+| is_followed | bool | 是否关注该教师 |
+
+### 关注教师
+
+> `PUT` /v1/student/teachers/{teacher}/follow (需要认证)
+
+### 取关教师
+
+> `PUT` /v1/student/teachers/{teacher}/unfollow (需要认证)
