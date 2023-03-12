@@ -14,7 +14,7 @@ Route::post('register', 'AuthController@teacherRegister');
 | 认证路由
 |--------------------------------------------------------------------------
 */
-Route::group(['middleware' => 'auth:teacher'], function () {
+Route::group(['middleware' => ['auth:teacher', 'scope:teacher']], function () {
     // 学校管理
     Route::apiResource('schools', 'SchoolController');
 

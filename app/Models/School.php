@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GuardEnum;
 use App\Enums\SchoolStatusEnum;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -65,7 +66,7 @@ class School extends Model
 
         $user = Auth::user();
 
-        if ($user instanceof Teacher) {
+        if ($user->tokenCan(GuardEnum::TEACHER)) {
             if ($this->attributes['owner_id'] == $user->id) {
                 return true;
             }

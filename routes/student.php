@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 | 认证路由
 |--------------------------------------------------------------------------
 */
-Route::group(['middleware' => 'auth:student'], function () {
+Route::group(['middleware' => ['auth:student', 'scope:student']], function () {
     // 学校详情
     Route::get('school', 'SchoolController@studentSchool');
 

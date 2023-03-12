@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Enums\GuardEnum;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -23,5 +25,10 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Passport::tokensCan([
+            GuardEnum::TEACHER => '老师',
+            GuardEnum::STUDENT => '学生',
+        ]);
     }
 }

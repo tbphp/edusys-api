@@ -46,7 +46,7 @@ class AuthController extends Controller
         $user->tokens()->delete();
 
         // 创建用户token
-        $token = $user->createToken(ucfirst($guard) . ' Token');
+        $token = $user->createToken(ucfirst($guard) . ' Token', [$guard]);
 
         return [
             'token_type' => 'bearer',
