@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind(LengthAwarePaginator::class, ApiPaginator::class);
+        app('translator')->addNamespace('ratchet', resource_path('lang/askedio/ratchet'));
     }
 
     /**
