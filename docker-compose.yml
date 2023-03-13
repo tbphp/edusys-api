@@ -8,7 +8,7 @@ services:
       - .:/app
   chat:
     image: tbphp/php-7.2.34-fpm
-    container_name: php
+    container_name: chat
     restart: always
     volumes:
       - .:/app
@@ -34,6 +34,7 @@ services:
     image: "mysql"
     container_name: mysql
     restart: always
+    privileged: true
     environment:
       MYSQL_ROOT_PASSWORD: 1236
     command:
