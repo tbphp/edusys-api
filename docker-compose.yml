@@ -1,14 +1,25 @@
 version: "3"
 services:
   php:
-    build: ./build/php
-    image: php-7.2.34
+    image: tbphp/php-7.2.34-fpm
     container_name: php
     restart: always
     volumes:
       - ./build/php/php.ini:/usr/local/etc/php/php.ini
       - ./build/php/composer:/usr/local/bin/composer
       - .:/app
+  chat:
+    image: tbphp/php-7.2.34-fpm
+    container_name: php
+    restart: always
+    volumes:
+      - .:/app
+    entrypoint:
+      - php
+      - /app/artisan
+      - ratchet:serve
+      - --driver=WsServe
+      - -z
     ports:
       - "8818:8818"
   nginx:

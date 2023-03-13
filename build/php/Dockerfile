@@ -9,3 +9,6 @@ RUN apt-get update \
         gettext mysqli pcntl sockets pdo_mysql shmop sysvmsg sysvsem sysvshm opcache wddx xsl \
     && pecl install igbinary-3.1.2 mcrypt-1.0.3 zip-1.19.0 redis-5.3.1 zmq-beta \
     && docker-php-ext-enable igbinary mcrypt zip redis zmq
+
+COPY composer /usr/local/bin/composer
+COPY php.ini /usr/local/etc/php/php.ini
