@@ -2,6 +2,8 @@
 
 namespace App\Http\Websockets;
 
+use App\Enums\ChatActionEnum;
+use App\Models\OfflineMessage;
 use Exception;
 use Illuminate\Support\Arr;
 use Ratchet\ConnectionInterface;
@@ -44,38 +46,47 @@ class ChatHandler
 
         $action = 'action' . ucfirst($data['action']);
         if (!method_exists($this, $action)) {
-            $this->pusher->console->error(sprintf('操作不存在：%s', $action));
+            $this->pusher->console->error(sprintf('动作不存在：%s', $action));
             return;
         }
 
         try {
             $this->$action($data['data'] ?? '');
         } catch (Throwable $e) {
-            $this->pusher->console->error(sprintf('执行操作失败：%s', $e->getMessage()));
+            $this->pusher->console->error(sprintf('执行动作失败：%s', $e->getMessage()));
         }
     }
 
     /**
-     * 单聊
+     * 发送消息（单聊）
      *
      * @return void
      */
-    public function actionChat(array $data)
+    public function actionSend(array $data)
     {
-        if (empty($data['to'])) {
+        if (empty($data['user'])) {
             return;
         }
 
-        $key = sprintf('%d-%d', $data['to']['identity'] ?? 0, $data['to']['id'] ?? 0);
-        /** @var $conn ConnectionInterface */
-        if (empty($conn = $this->pusher->users[$key])) {
-            return;
-        }
-
-        $conn->send(json_encode([
-            'type' => 'msg',
+        $msgData = [
+            'user' => Arr::only($this->pusher->clients[$this->conn], ['id', 'name', 'identity']),
             'content' => $data['content'] ?? '',
-            'user' => Arr::only($this->pusher->clients[$conn], ['identity', 'id', 'name']),
-        ]));
+            'time' => time(),
+        ];
+
+        $key = sprintf('%d-%d', $data['user']['identity'] ?? 0, $data['user']['id'] ?? 0);
+        if (empty($conn = $this->pusher->users[$key] ?? null)) {
+            // 如果用户不在线，则保存离线消息
+            OfflineMessage::create([
+                'type' => OfflineMessage::TYPE_USER,
+                'user_key' => $key,
+                'data' => $msgData,
+            ]);
+            return;
+        }
+
+        $this->pusher->msg($conn, ChatActionEnum::MSG, [
+            'list' => [$msgData],
+        ]);
     }
 }

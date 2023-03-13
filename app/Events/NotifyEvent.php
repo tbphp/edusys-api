@@ -9,13 +9,14 @@ use Illuminate\Queue\SerializesModels;
 
 class NotifyEvent implements ShouldBroadcastNow
 {
-    use SerializesModels;
+    public $userKey;
 
-    public $student;
+    public $msg;
 
-    public function __construct(Student $student)
+    public function __construct(string $userKey, string $msg)
     {
-        $this->student = $student;
+        $this->userKey = $userKey;
+        $this->msg = $msg;
     }
 
     public function broadcastOn(): array
