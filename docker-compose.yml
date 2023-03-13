@@ -12,12 +12,7 @@ services:
     restart: always
     volumes:
       - .:/app
-    entrypoint:
-      - php
-      - /app/artisan
-      - ratchet:serve
-      - --driver=WsServe
-      - -z
+    entrypoint: php artisan ratchet:serve --driver=WsServer -z
     ports:
       - "8818:8818"
   nginx:
