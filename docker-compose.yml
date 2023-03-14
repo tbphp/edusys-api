@@ -4,14 +4,20 @@ services:
     image: tbphp/php-7.2.34-fpm
     container_name: php
     restart: always
+    working_dir: /app
     volumes:
       - .:/app
+    depends_on:
+      - mysql
   chat:
     image: tbphp/php-7.2.34-fpm
     container_name: chat
     restart: always
+    working_dir: /app
     volumes:
       - .:/app
+    depends_on:
+      - mysql
     entrypoint: php /app/artisan ratchet:serve --driver=WsServer -z
     ports:
       - "8818:8818"
@@ -21,6 +27,9 @@ services:
     restart: always
     ports:
       - "8819:80"
+    working_dir: /app
+    depends_on:
+      - php
     volumes:
       - ./build/nginx/nginx.conf:/etc/nginx/nginx.conf
       - .:/app
