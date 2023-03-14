@@ -48,6 +48,8 @@ services:
       --collation-server=utf8mb4_general_ci
       --explicit_defaults_for_timestamp=true
       --lower_case_table_names=1
+    ports:
+      - "33601:3306"
     volumes:
       - mysql-data:/var/lib/mysql
   redis:
