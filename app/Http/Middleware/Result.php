@@ -18,7 +18,7 @@ class Result
         $response = $next($request);
 
         // 过滤
-        if ($this->filter($response)) {
+        if ($this->filter($request, $response)) {
             return $response;
         }
 
@@ -34,13 +34,18 @@ class Result
     /**
      * 过滤不需要处理的返回
      *
+     * @param Request $request
      * @param Response $response
      * @return bool
      */
-    private function filter(Response $response): bool
+    private function filter(Request $request, Response $response): bool
     {
         // 过滤异常
         if (property_exists($response, 'exception') && $response->exception) {
+            return true;
+        }
+
+        if ($request->is(config('app.filter_urls.result'))) {
             return true;
         }
 

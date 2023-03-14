@@ -2,27 +2,32 @@
 
 namespace App\Events;
 
-use App\Models\Student;
-use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 class NotifyEvent implements ShouldBroadcastNow
 {
-    public $userKey;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $msg;
+    public $message;
 
-    public function __construct(string $userKey, string $msg)
+    public function __construct($message)
     {
-        $this->userKey = $userKey;
-        $this->msg = $msg;
+        $this->message = $message;
     }
 
     public function broadcastOn(): array
     {
         return [
-            new Channel('notify'),
+            new PrivateChannel('my-channel'),
         ];
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'my-event';
     }
 }
