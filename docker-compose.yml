@@ -48,5 +48,12 @@ services:
       --lower_case_table_names=1
     volumes:
       - mysql-data:/var/lib/mysql
+  redis:
+    image: "redis"
+    container_name: redis
+    restart: always
+    volumes:
+      - redis-data:/data
 volumes:
   mysql-data:
+  redis-data:
