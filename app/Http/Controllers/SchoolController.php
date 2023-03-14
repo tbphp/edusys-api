@@ -37,11 +37,15 @@ class SchoolController extends Controller
 
     public function store(SchoolRequest $request)
     {
-        School::create([
-            'name' => $request->input('name'),
-            'owner_id' => $this->_teacher()->id,
-            'status' => SchoolStatusEnum::PENDDING,
-        ]);
+        DB::transaction(function () use ($request) {
+            $teacher = $this->_teacher();
+            $school = School::create([
+                'name' => $request->input('name'),
+                'owner_id' => $teacher->id,
+                'status' => SchoolStatusEnum::PENDDING,
+            ]);
+            $school->teachers()->attach($teacher);
+        });
     }
 
     public function show(School $school)
