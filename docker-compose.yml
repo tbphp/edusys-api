@@ -9,6 +9,7 @@ services:
       - .:/app
     depends_on:
       - mysql
+      - redis
   chat:
     image: tbphp/php-7.2.34-fpm
     container_name: chat
@@ -18,6 +19,7 @@ services:
       - .:/app
     depends_on:
       - mysql
+      - redis
     entrypoint: php /app/artisan ratchet:serve --driver=WsServer -z
     ports:
       - "8818:8818"
