@@ -8,12 +8,10 @@
   "license": "MIT",
   "type": "project",
   "require": {
-    "php": "7.2.34",
+    "php": ">=7.0.0",
     "ext-json": "*",
     "ext-pdo": "*",
     "ext-redis": "*",
-    "ext-zmq": "*",
-    "askedio/laravel-ratchet": "^5.6",
     "bensampo/laravel-enum": "^1.19",
     "fideloper/proxy": "~3.3",
     "fruitcake/laravel-cors": "^1.0",
@@ -21,7 +19,6 @@
     "laravel/passport": "~4.0",
     "laravel/tinker": "~1.0",
     "lcobucci/jwt": "3.3.3",
-    "pelim/laravel-zmq": "^1.0",
     "predis/predis": "^2.1"
   },
   "require-dev": {

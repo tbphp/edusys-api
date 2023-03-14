@@ -46,10 +46,6 @@ return [
             'connection' => 'default',
         ],
 
-        'zmq' => [
-            'driver' => 'zmq',
-        ],
-
         'log' => [
             'driver' => 'log',
         ],
