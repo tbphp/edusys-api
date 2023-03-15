@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Enums\IdentityEnum;
 use App\Exceptions\CException;
+use App\Http\Requests\MessageStoreRequest;
 use App\Libs\Chat;
 use App\Models\Student;
 use App\Models\Teacher;
-use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    public function store(Request $request)
+    public function store(MessageStoreRequest $request)
     {
         if ($request->input('identity') == IdentityEnum::TEACHER) {
             $user = Teacher::findOrFail($request->input('user_id'));

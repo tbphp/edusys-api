@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ErrCode;
+use App\Enums\GuardEnum;
 use App\Enums\IdentityEnum;
 use App\Exceptions\CException;
 use App\Http\Requests\LoginRequest;
@@ -52,7 +53,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'access_token' => $token->accessToken,
             'id' => $user->id,
-            'name' => $user->name
+            'name' => $user->name,
         ];
     }
 
@@ -69,7 +70,7 @@ class AuthController extends Controller
         $teacher->save();
 
         // 创建用户token
-        $token = $teacher->createToken('Teacher Token');
+        $token = $teacher->createToken('Teacher Token', [GuardEnum::TEACHER]);
 
         return [
             'token_type' => 'bearer',
