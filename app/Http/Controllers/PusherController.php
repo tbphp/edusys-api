@@ -16,14 +16,19 @@ class PusherController extends Controller
      */
     public function callback(Request $request)
     {
-        Log::info('puserh_data', $request->all());
+        $headers = [
+            'X-Pusher-Key' => $request->header('X-Pusher-Key'),
+            'X-Pusher-Signature' => $request->header('X-Pusher-Signature'),
+        ];
+
         $pusher = new Pusher(
             config('broadcasting.connections.pusher.key'),
             config('broadcasting.connections.pusher.secret'),
             config('broadcasting.connections.pusher.app_id')
         );
 
-        $webhook = $pusher->webhook($request->headers->all(), $request->getContent());
+        $webhook = $pusher->webhook($headers, $request->getContent());
+
         foreach ($webhook->get_events() as $event) {
             Log::info('pusher_event', $event);
         }
