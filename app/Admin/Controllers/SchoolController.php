@@ -33,6 +33,10 @@ class SchoolController extends AdminController
     {
         $grid = new Grid(new School());
 
+        $grid->model()
+            ->latest('id')
+            ->withCount(['teachers', 'students']);
+
         $grid->model()->collection(function (Collection $schools) {
             /** @var School $school */
             foreach ($schools as $school) {
@@ -58,6 +62,8 @@ class SchoolController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
         $grid->column('owner.name', __('Owner'));
+        $grid->column('teachers_count', '教师数量');
+        $grid->column('students_count', '学生数量');
         $grid->column('status_text', __('Status'));
         $grid->column('reject_reason', __('Reject reason'));
         $grid->column('created_at', __('Created at'))->dt();
@@ -74,11 +80,13 @@ class SchoolController extends AdminController
      */
     protected function detail($id): Show
     {
-        $show = new Show(School::findOrFail($id));
+        $show = new Show(School::withCount(['teachers', 'students'])->findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
         $show->field('owner.name', __('Owner'));
+        $show->field('teachers_count', '教师数量');
+        $show->field('students_count', '学生数量');
         $show->field('status_text', __('Status'));
         $show->field('reject_reason', __('Reject reason'));
         $show->field('created_at', __('Created at'));
@@ -105,7 +113,7 @@ class SchoolController extends AdminController
         $form->saving(function (Form $form) {
             /** @var School $school */
             $school = $form->model();
-            $school->teachers()->attach($school->owner_id);
+            $school->teachers()->syncWithoutDetaching($school->owner_id);
         });
 
         $form->text('name', __('Name'));
