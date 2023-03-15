@@ -26,5 +26,7 @@ Form::forget(['map', 'editor']);
 
 // 时间格式化
 Column::extend('dt', function ($value) {
-    return Carbon::createFromTimestamp($value)->format('Y-m-d H:i:s');
+    return Carbon::createFromTimestamp($value)
+        ->tz('Asia/Shanghai')
+        ->format('Y-m-d H:i:s');
 });
