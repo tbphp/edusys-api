@@ -1,7 +1,12 @@
 <?php
 
+use App\Models\AuthModel;
+use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Contracts\Cache\Lock;
 use Illuminate\Support\Facades\DB;
+use LINE\Laravel\Facade\LINEBot;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 /**
  * 记录sql的开始点
@@ -51,5 +56,27 @@ function table_comment(string $table_name, string $comment)
  */
 function lock(string $key, int $seconds = 60, $owner = null): Lock
 {
+    /** @noinspection PhpUndefinedMethodInspection */
     return Cache::lock('lock:' . $key, $seconds, $owner);
+}
+
+/**
+ * line消息推送
+ *
+ * @param Teacher|Student $user
+ * @param string $message
+ * @return void
+ */
+function line_message(AuthModel $user, string $message)
+{
+    $lineId = $user->line_id;
+    if (empty($lineId) || empty($message)) {
+        return;
+    }
+
+    /** @noinspection PhpUndefinedMethodInspection */
+    LINEBot::pushMessage(
+        $lineId,
+        new TextMessageBuilder($message)
+    );
 }
