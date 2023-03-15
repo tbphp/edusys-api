@@ -20,7 +20,7 @@ abstract class AuthModel extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'password',
+        'name', 'username', 'line_id'
     ];
 
     /**
