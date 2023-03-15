@@ -19,4 +19,7 @@ Route::group(['middleware' => ['auth:student', 'scope:student']], function () {
 
     // 取关
     Route::put('teachers/{teacher}/unfollow', 'FollowController@unfollow');
+
+    // 发送消息
+    Route::post('messages', 'MessageController@store');
 });

@@ -392,6 +392,16 @@
 }
 ```
 
+### 发送消息
+
+> `POST` /v1/teacher/messages (需要认证)
+
+|    字段    |   类型   |       说明        |
+|:--------:|:------:|:---------------:|
+| identity |  int   | 身份：1.教师，2.学生。必填 |
+| user_id  |  int   |   教师或学生的ID。必填   |
+| message  | string |     消息内容。必填     |
+
 ## 学生
 
 ### 学校详情
@@ -456,107 +466,12 @@
 
 > `PUT` /v1/student/teachers/{teacher}/unfollow (需要认证)
 
-## WebSocket
+### 发送消息
 
-### 连接地址
+> `POST` /v1/student/messages (需要认证)
 
-ws://{path}?identity={identity}&token={token}
-
-|    字段    |   类型   |       说明       |
-|:--------:|:------:|:--------------:|
-|   path   | string |   部署后的ws域名地址   |
-| identity |  int   | 用户身份：1.教师，2.学生 |
-|  token   | string |      访问令牌      |
-
-### 数据格式
-
-前后端统一JSON类型，并且固定格式为：
-
-```json
-{
-  "action": "someaction",
-  "data": {
-    "key1": "value1",
-    "key2": "value2"
-  }
-}
-```
-
-|   字段   |   类型   | 说明  |
-|:------:|:------:|:---:|
-| action | string | 动作  |
-|  data  | object | 数据  |
-
-### 发送消息-前端
-
-```json
-{
-  "action": "send",
-  "data": {
-    "user": {
-      "id": 1,
-      "identity": 1
-    },
-    "content": "xxxxxxxxx"
-  }
-}
-```
-
-|      字段       |   类型   |       说明       |
-|:-------------:|:------:|:--------------:|
-|     user      | object |   消息接收者的用户对象   |
-|    user.id    |  int   |      用户id      |
-| user.identity |  int   | 用户身份：1.教师，2.学生 |
-
-### 新消息-后端
-
-```json
-{
-  "action": "msg",
-  "data": {
-    "list": [
-      {
-        "user": {
-          "id": 1,
-          "name": "张三",
-          "identity": 1
-        },
-        "content": "xxxxxxx",
-        "time": 1678678579
-      }
-    ]
-  }
-}
-```
-
-|       字段       |   类型   |     说明     |
-|:--------------:|:------:|:----------:|
-|      list      | array  |    消息列表    |
-|  list.*.usre   | object | 消息发送者的用户对象 |
-| list.*.content | string |    消息内容    |
-|  list.*.time   |  int   |    消息时间    |
-
-### 系统通知-后端
-
-```json
-{
-  "action": "notify",
-  "data": {
-    "list": [
-      {
-        "content": "xxxxxxx",
-        "time": 1678678579
-      }
-    ]
-  }
-}
-```
-
-### 错误消息-后端
-
-```json
-{
-  "action": "error",
-  "msg": "xxx"
-}
-```
+|    字段    |   类型   |       说明        |
+|:--------:|:------:|:---------------:|
+| identity |  int   | 身份：1.教师，2.学生。必填 |
+| user_id  |  int   |   教师或学生的ID。必填   |
+| message  | string |     消息内容。必填     |

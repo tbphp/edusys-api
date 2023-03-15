@@ -30,4 +30,7 @@ Route::group(['middleware' => ['auth:teacher', 'scope:teacher']], function () {
     // 粉丝
     Route::get('fans', 'FollowController@fans');
     Route::get('fans/count', 'FollowController@fansCount');
+
+    // 发送消息
+    Route::post('messages', 'MessageController@store');
 });
