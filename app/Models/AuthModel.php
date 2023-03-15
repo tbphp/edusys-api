@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\IdentityEnum;
 use DateTimeInterface;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -34,5 +35,21 @@ abstract class AuthModel extends Authenticatable
     protected function serializeDate(DateTimeInterface $date): int
     {
         return $date->getTimestamp();
+    }
+
+    public function getIdentityAttribute(): int
+    {
+        return $this instanceof Teacher ? IdentityEnum::TEACHER : IdentityEnum::STUDENT;
+    }
+
+    /**
+     * 获取多角色用户唯一key
+     *
+     * @return string
+     */
+    public function getUserKeyAttribute(): string
+    {
+        $identity = $this instanceof Teacher ? IdentityEnum::TEACHER : IdentityEnum::STUDENT;
+        return sprintf('%d-%d', $identity, $this->attributes['id']);
     }
 }

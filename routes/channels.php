@@ -11,20 +11,15 @@
 |
 */
 
-use App\Enums\GuardEnum;
 use App\Models\AuthModel;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Broadcast;
 
-Broadcast::channel('my-channel', function (AuthModel $user) {
-
-    // 验证多表用户权限
-    if ($user instanceof Teacher) {
-        return $user->tokenCan(GuardEnum::TEACHER);
-    } else if ($user instanceof Student) {
-        return $user->tokenCan(GuardEnum::STUDENT);
+Broadcast::channel('chat.{key}', function (AuthModel $user, string $key) {
+    /** @var $user Teacher|Student */
+    if ($key === $user->user_key) {
+        return ['id' => $user->id, 'name' => $user->name, 'identity' => $user->identity];
     }
-
-    return false;
+    return null;
 });

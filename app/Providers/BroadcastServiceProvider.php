@@ -15,8 +15,19 @@ class BroadcastServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Broadcast::routes(['prefix' => GuardEnum::STUDENT, 'middleware' => ['api', 'auth:student']]);
-        Broadcast::routes(['prefix' => GuardEnum::TEACHER, 'middleware' => ['api', 'auth:teacher']]);
+        Broadcast::routes([
+            'prefix' => GuardEnum::STUDENT,
+            'middleware' => [
+                'api', 'auth:student', 'scope:student',
+            ],
+        ]);
+
+        Broadcast::routes([
+            'prefix' => GuardEnum::TEACHER,
+            'middleware' => [
+                'api', 'auth:teacher', 'scope:teacher',
+            ]
+        ]);
 
         require base_path('routes/channels.php');
     }

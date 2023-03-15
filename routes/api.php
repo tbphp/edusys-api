@@ -16,4 +16,7 @@ Route::group(['prefix' => 'v1'], function () {
         ['prefix' => 'student'],
         base_path('routes/student.php')
     );
+
+    // pusher webhook处理
+    Route::post('pusher_callback', 'PusherController@callback');
 });
