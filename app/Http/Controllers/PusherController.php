@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Libs\Chat;
+use App\Models\OfflineMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
 use Pusher\Pusher;
 use Pusher\PusherException;
 
 class PusherController extends Controller
 {
-    const CACHE_KEY = 'pusher_online';
-
     /**
      * 回调
      *
@@ -35,16 +34,38 @@ class PusherController extends Controller
         foreach ($webhook->get_events() as $event) {
             switch ($event->name) {
                 case 'channel_occupied':
-                    Redis::sadd(self::CACHE_KEY, [$event->channel]);
                     Log::info('用户上线：' . $event->channel);
+                    $this->_offlineMessage($event->channel);
                     break;
                 case 'channel_vacated':
-                    Redis::srem(self::CACHE_KEY, $event->channel);
                     Log::info('用户下线：' . $event->channel);
                     break;
             }
         }
+    }
 
-        Log::info('当前用户数：' . Redis::scard(self::CACHE_KEY));
+    /**
+     * 获取离线消息
+     *
+     * @param string $userKey
+     * @return void
+     */
+    protected function _offlineMessage(string $userKey)
+    {
+        $messages = OfflineMessage::where('user_key', $userKey)->get();
+        if ($messages->isEmpty()) {
+            return;
+        }
+
+        $messages->map(function (OfflineMessage $message) {
+            (new Chat)->send(
+                $message->userTo,
+                $message->message,
+                $message->type,
+                false,
+                $message->created_at->timestamp
+            );
+            $message->delete();
+        });
     }
 }

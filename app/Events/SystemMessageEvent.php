@@ -11,14 +11,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageEvent implements ShouldBroadcastNow
+class SystemMessageEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    /**
-     * @var Teacher|Student|null
-     */
-    public $from;
 
     /**
      * @var Teacher|Student
@@ -29,9 +24,8 @@ class MessageEvent implements ShouldBroadcastNow
 
     public $time;
 
-    public function __construct($from, AuthModel $to, string $message, int $time)
+    public function __construct(AuthModel $to, string $message, int $time)
     {
-        $this->from = $from;
         $this->to = $to;
         $this->message = $message;
         $this->time = $time;
@@ -46,6 +40,6 @@ class MessageEvent implements ShouldBroadcastNow
 
     public function broadcastAs(): string
     {
-        return 'message';
+        return 'notify';
     }
 }

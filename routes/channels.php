@@ -18,8 +18,5 @@ use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('chat.{key}', function (AuthModel $user, string $key) {
     /** @var $user Teacher|Student */
-    if ($key === $user->user_key) {
-        return ['id' => $user->id, 'name' => $user->name, 'identity' => $user->identity];
-    }
-    return null;
+    return $key === $user->user_key;
 });
