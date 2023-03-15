@@ -4,6 +4,7 @@ use App\Models\AuthModel;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Contracts\Cache\Lock;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use LINE\Laravel\Facade\LINEBot;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
