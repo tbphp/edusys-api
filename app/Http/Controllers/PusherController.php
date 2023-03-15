@@ -47,11 +47,19 @@ class PusherController extends Controller
     /**
      * 获取离线消息
      *
-     * @param string $userKey
+     * @param string $channel
      * @return void
      */
-    protected function _offlineMessage(string $userKey)
+    protected function _offlineMessage(string $channel)
     {
+        // 获取userkey
+        $arr = explode('.', $channel);
+        $userKey = $arr[1] ?? '';
+        if (empty($userKey)) {
+            Log::error('channel不合法，无法获取userkey。channel:' . $channel);
+            return;
+        }
+
         $messages = OfflineMessage::where('user_key', $userKey)->get();
         if ($messages->isEmpty()) {
             return;
