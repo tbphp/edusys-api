@@ -19,13 +19,13 @@ class LineController extends Controller
     {
         $client = new Client();
         try {
-            $response = $client->post('https://api.line.me/oauth2/v2.1/token', [
+            $response = $client->post(config('services.line.host') . '/oauth2/v2.1/token', [
                 'form_params' => [
                     'grant_type' => 'authorization_code',
                     'code' => $code,
-                    'redirect_uri' => 'http://localhost:5173',
-                    'client_id' => '1660746199',
-                    'client_secret' => '1de7b315fd95915d50535d3bc0703770',
+                    'redirect_uri' => config('services.line.redirect_uri'),
+                    'client_id' => config('services.line.channel_id'),
+                    'client_secret' => config('services.line.channel_secret'),
                 ],
             ]);
 
@@ -45,9 +45,9 @@ class LineController extends Controller
 
         try {
             $client = new Client();
-            $response = $client->post('https://api.line.me/oauth2/v2.1/verify', [
+            $response = $client->post(config('services.line.host') . '/oauth2/v2.1/verify', [
                 'form_params' => [
-                    'client_id' => '1660746199',
+                    'client_id' => config('services.line.channel_id'),
                     'id_token' => $token,
                 ],
             ]);
