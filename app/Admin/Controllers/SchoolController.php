@@ -102,6 +102,12 @@ class SchoolController extends AdminController
                 ->append('status_text');
         });
 
+        $form->saving(function (Form $form) {
+            /** @var School $school */
+            $school = $form->model();
+            $school->teachers()->attach($school->owner_id);
+        });
+
         $form->text('name', __('Name'));
         $form->select('owner_id', __('Owner'))
             ->options(Teacher::pluck('name', 'id'));
