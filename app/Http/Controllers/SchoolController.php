@@ -67,6 +67,10 @@ class SchoolController extends Controller
             throw new CException(ErrCode::HTTP_AUTHORIZATION);
         }
 
+        if (SchoolStatusEnum::NORMAL !== $school->status) {
+            throw new CException('状态异常');
+        }
+
         $school->update(['name' => $request->input('name')]);
     }
 
