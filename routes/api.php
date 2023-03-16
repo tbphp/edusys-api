@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', 'AuthController@login');
+Route::post('login', 'AuthController@login');
 
 // 教师路由
 Route::group(
