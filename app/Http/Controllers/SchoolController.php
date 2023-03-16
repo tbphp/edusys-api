@@ -24,7 +24,9 @@ class SchoolController extends Controller
     public function index()
     {
         $teacher = $this->_teacher();
-        $result = $teacher->schools()->latest('id')->paginate();
+        $result = $teacher->schools()
+            ->latest('id')
+            ->paginate(request('per_page'));
 
         // 判断登录用户是否管理员
         $result->map(function (School $school) use ($teacher) {

@@ -32,7 +32,10 @@ class FollowController extends Controller
         /** @var Teacher $teacher */
         $teacher = Auth::guard(GuardEnum::TEACHER)->user();
 
-        return $teacher->fans()->latest('id')->with('school')->paginate();
+        return $teacher->fans()
+            ->latest('id')
+            ->with('school')
+            ->paginate(request('per_page'));
     }
 
     /**

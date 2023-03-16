@@ -43,7 +43,7 @@ class ApiPaginator extends LengthAwarePaginator
             'total' => $this->total(),
             'current_page' => $this->currentPage(),
             'last_page' => $this->lastPage(),
-            'per_page' => $this->perPage(),
+            'per_page' => intval($this->perPage()),
             'from' => $this->firstItem() ?? 0,
             'to' => $this->lastItem() ?? 0,
         ];

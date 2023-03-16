@@ -34,7 +34,9 @@ class SchoolStudentController extends Controller
 
     public function index(School $school)
     {
-        return $school->students()->latest('id')->paginate();
+        return $school->students()
+            ->latest('id')
+            ->paginate(request('per_page'));
     }
 
     public function store(SchoolStudentStoreRequest $request, School $school)

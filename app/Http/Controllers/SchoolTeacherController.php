@@ -38,7 +38,9 @@ class SchoolTeacherController extends Controller
     {
         $this->_checkOwner($school);
 
-        return $school->teachers()->latest('id')->paginate();
+        return $school->teachers()
+            ->latest('id')
+            ->paginate(request('per_page'));
     }
 
     public function store(SchoolTeacherStoreRequest $request, School $school)
@@ -76,7 +78,7 @@ class SchoolTeacherController extends Controller
             ->with(['fans' => function (BelongsToMany $query) use ($student) {
                 $query->where('students.id', $student->id);
             }])
-            ->paginate();
+            ->paginate(request('per_page'));
 
         // 判断是否关注教师
         $result->map(function (Teacher $teacher) {
