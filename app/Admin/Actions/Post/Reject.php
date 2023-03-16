@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class Reject extends RowAction
 {
-    public $name = '<span class="text text-danger">拒绝</span>';
+    public $name = '拒绝';
 
     public function handle(School $school, Request $request)
     {
