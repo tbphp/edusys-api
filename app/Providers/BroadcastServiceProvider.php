@@ -16,14 +16,14 @@ class BroadcastServiceProvider extends ServiceProvider
     public function boot()
     {
         Broadcast::routes([
-            'prefix' => 'v1/' . GuardEnum::STUDENT,
+            'prefix' => 'api/' . GuardEnum::STUDENT,
             'middleware' => [
                 'api', 'auth:student', 'scope:student',
             ],
         ]);
 
         Broadcast::routes([
-            'prefix' => 'v1/' . GuardEnum::TEACHER,
+            'prefix' => 'api/' . GuardEnum::TEACHER,
             'middleware' => [
                 'api', 'auth:teacher', 'scope:teacher',
             ],

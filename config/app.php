@@ -129,8 +129,8 @@ return [
 
     'filter_urls' => [
         'result' => [
-            'v1/student/broadcasting/*',
-            'v1/teacher/broadcasting/*',
+            'api/student/broadcasting/*',
+            'api/teacher/broadcasting/*',
         ],
     ],
 

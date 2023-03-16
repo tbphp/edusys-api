@@ -39,7 +39,7 @@
 
 ### 登录
 
-> `POST` /v1/login (不需要认证)
+> `POST` /api/login (不需要认证)
 
 **入参：**
 
@@ -73,7 +73,7 @@
 
 ### 注册
 
-> `POST` /v1/teacher/register (不需要认证)
+> `POST` /api/teacher/register (不需要认证)
 
 **入参：**
 
@@ -99,7 +99,7 @@
 
 ### 学校列表
 
-> `GET` /v1/teacher/schools (需要认证)
+> `GET` /api/teacher/schools (需要认证)
 
 **Query:**
 
@@ -161,7 +161,7 @@
 
 ### 创建学校
 
-> `POST` /v1/teacher/schools (需要认证)
+> `POST` /api/teacher/schools (需要认证)
 
 **入参：**
 
@@ -171,7 +171,7 @@
 
 ### 学校详情
 
-> `GET` /v1/teacher/schools/{school_id} (需要认证)
+> `GET` /api/teacher/schools/{school_id} (需要认证)
 
 **返回：**
 
@@ -191,7 +191,7 @@
 
 ### 修改学校名称
 
-> `PUT` /v1/teacher/schools/{school_id} (需要认证)  
+> `PUT` /api/teacher/schools/{school_id} (需要认证)  
 > 仅该学校管理员可操作
 
 **入参：**
@@ -202,12 +202,12 @@
 
 ### 删除学校
 
-> `DELETE` /v1/teacher/schools/{school_id} (需要认证)  
+> `DELETE` /api/teacher/schools/{school_id} (需要认证)  
 > 仅该学校管理员可操作
 
 ### 学校页面老师列表
 
-> `GET` /v1/teacher/schools/{school_id}/teachers (需要认证)  
+> `GET` /api/teacher/schools/{school_id}/teachers (需要认证)  
 > 仅该学校管理员可操作
 
 **返回：**
@@ -238,7 +238,7 @@
 
 ### 学校页面邀请老师
 
-> `POST` /v1/teacher/schools/{school_id}/teachers (需要认证)  
+> `POST` /api/teacher/schools/{school_id}/teachers (需要认证)  
 > 仅该学校管理员可操作
 
 **入参：**
@@ -249,12 +249,12 @@
 
 ### 学校页面移除老师
 
-> `DELETE` /v1/teacher/schools/{school_id}/teachers/{teacher_id} (需要认证)  
+> `DELETE` /api/teacher/schools/{school_id}/teachers/{teacher_id} (需要认证)  
 > 仅该学校管理员可操作
 
 ### 学校页面学生列表
 
-> `GET` /v1/teacher/schools/{school_id}/students (需要认证)
+> `GET` /api/teacher/schools/{school_id}/students (需要认证)
 
 **返回：**
 
@@ -284,7 +284,7 @@
 
 ### 学校页面创建学生
 
-> `POST` /v1/teacher/schools/{school_id}/students (需要认证)  
+> `POST` /api/teacher/schools/{school_id}/students (需要认证)  
 > 仅该学校管理员可操作
 
 **入参：**
@@ -311,7 +311,7 @@
 
 ### 学校页面修改学生名称
 
-> `PUT` /v1/teacher/schools/{school_id}/students/{student_id} (需要认证)  
+> `PUT` /api/teacher/schools/{school_id}/students/{student_id} (需要认证)  
 > 仅该学校管理员可操作
 
 |  字段  |   类型   |      说明      |
@@ -320,12 +320,12 @@
 
 ### 学校页面删除学生
 
-> `DELETE` /v1/teacher/schools/{school_id}/students/{student_id} (需要认证)  
+> `DELETE` /api/teacher/schools/{school_id}/students/{student_id} (需要认证)  
 > 仅该学校管理员可操作
 
 ### 学校页面重置学生密码
 
-> `PUT` /v1/teacher/schools/{school_id}/students/{student_id}/reset_password (需要认证)  
+> `PUT` /api/teacher/schools/{school_id}/students/{student_id}/reset_password (需要认证)  
 > 仅该学校管理员可操作
 
 **返回：**
@@ -342,7 +342,7 @@
 
 ### 粉丝列表
 
-> `GET` /v1/teacher/fans (需要认证)
+> `GET` /api/teacher/fans (需要认证)
 
 **返回：**
 
@@ -378,7 +378,7 @@
 
 ### 粉丝数量
 
-> `GET` /v1/teacher/fans/count (需要认证)
+> `GET` /api/teacher/fans/count (需要认证)
 
 **返回：**
 
@@ -394,7 +394,7 @@
 
 ### 发送消息
 
-> `POST` /v1/teacher/messages (需要认证)
+> `POST` /api/teacher/messages (需要认证)
 
 |    字段    |   类型   |       说明        |
 |:--------:|:------:|:---------------:|
@@ -406,7 +406,7 @@
 
 ### 学校详情
 
-> `GET` /v1/student/school (需要认证)
+> `GET` /api/student/school (需要认证)
 
 **返回：**
 
@@ -425,7 +425,7 @@
 
 ### 教师列表
 
-> `GET` /v1/student/teachers (需要认证)
+> `GET` /api/student/teachers (需要认证)
 
 **返回：**
 
@@ -460,15 +460,15 @@
 
 ### 关注教师
 
-> `PUT` /v1/student/teachers/{teacher}/follow (需要认证)
+> `PUT` /api/student/teachers/{teacher}/follow (需要认证)
 
 ### 取关教师
 
-> `PUT` /v1/student/teachers/{teacher}/unfollow (需要认证)
+> `PUT` /api/student/teachers/{teacher}/unfollow (需要认证)
 
 ### 发送消息
 
-> `POST` /v1/student/messages (需要认证)
+> `POST` /api/student/messages (需要认证)
 
 |    字段    |   类型   |       说明        |
 |:--------:|:------:|:---------------:|
