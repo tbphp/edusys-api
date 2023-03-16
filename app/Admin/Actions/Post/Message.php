@@ -29,7 +29,7 @@ class Message extends RowAction
         foreach ($types as $type) {
             if ($type == self::TYPE_INTERNAL) {
                 (new Chat)->send($user, $request->input('message'), OfflineMessage::TYPE_SYSTEM);
-            } elseif (self::TYPE_LINE) {
+            } elseif ($type == self::TYPE_LINE) {
                 line_message($user, $request->input('message'));
             }
         }
