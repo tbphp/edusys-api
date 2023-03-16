@@ -41,7 +41,6 @@ class SchoolController extends AdminController
             /** @var School $school */
             foreach ($schools as $school) {
                 $school->makeVisible(['status', 'reject_reason']);
-                $school->append('status_text');
             }
             return $schools;
         });
@@ -62,10 +61,14 @@ class SchoolController extends AdminController
         $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
         $grid->column('owner.name', __('Owner'));
-        $grid->column('teachers_count', '教师数量');
-        $grid->column('students_count', '学生数量');
-        $grid->column('status_text', __('Status'));
-        $grid->column('reject_reason', __('Reject reason'));
+        $grid->column('teachers_count', '教师数量')->label('default');
+        $grid->column('students_count', '学生数量')->label('default');
+        $grid->column('status')->using(SchoolStatusEnum::getKeyValue())->label([
+            SchoolStatusEnum::PENDDING => 'default',
+            SchoolStatusEnum::NORMAL => 'success',
+            SchoolStatusEnum::REJECTED => 'danger',
+        ]);
+        $grid->column('reject_reason', __('Reject reason'))->limit(20);
         $grid->column('created_at', __('Created at'))->dt();
         $grid->column('updated_at', __('Updated at'))->dt();
 
