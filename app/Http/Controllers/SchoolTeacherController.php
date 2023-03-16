@@ -38,7 +38,7 @@ class SchoolTeacherController extends Controller
     {
         $this->_checkOwner($school);
 
-        return $school->teachers()->paginate();
+        return $school->teachers()->latest('id')->paginate();
     }
 
     public function store(SchoolTeacherStoreRequest $request, School $school)

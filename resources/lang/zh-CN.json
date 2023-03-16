@@ -3,7 +3,10 @@
   "Created at": "创建时间",
   "Updated at": "更新时间",
   "Name": "名称",
+  "Names": "姓名",
+  "Username": "用户名",
   "Status": "状态",
   "Owner": "管理员",
-  "Reject reason": "拒绝原因"
+  "Reject reason": "拒绝原因",
+  "Bind Line": "绑定Line"
 }

@@ -26,6 +26,8 @@ class Reject extends RowAction
 
     public function form()
     {
-        $this->text('reject_reason', '拒绝原因');
+        $this->text('reject_reason', '拒绝原因')
+            ->required()
+            ->rules('string|min:3');
     }
 }

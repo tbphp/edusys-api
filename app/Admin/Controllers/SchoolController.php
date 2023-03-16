@@ -113,18 +113,28 @@ class SchoolController extends AdminController
                 ->append('status_text');
         });
 
-        $form->saving(function (Form $form) {
+        $form->submitted(function (Form $form) {
+            if (request('status') != SchoolStatusEnum::REJECTED) {
+                $form->reject_reason = '';
+            }
+        });
+
+        $form->saved(function (Form $form) {
             /** @var School $school */
             $school = $form->model();
             $school->teachers()->syncWithoutDetaching($school->owner_id);
         });
 
-        $form->text('name', __('Name'));
+        $form->text('name', __('Name'))
+            ->required()
+            ->rules('string|min:2|max:50');
         $form->select('owner_id', __('Owner'))
-            ->options(Teacher::pluck('name', 'id'));
+            ->options(Teacher::pluck('name', 'id'))
+            ->required();
         $form->radio('status', __('Status'))
             ->when(SchoolStatusEnum::REJECTED, function (Form $form) {
-                $form->text('reject_reason', __('Reject reason'));
+                $form->text('reject_reason', __('Reject reason'))
+                ->rules('required|string|min:3');
             })
             ->options(SchoolStatusEnum::getKeyValue())
             ->default(SchoolStatusEnum::NORMAL);
