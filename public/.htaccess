@@ -9,8 +9,16 @@
 
     RewriteEngine On
 
+    RewriteBase /
+
+    # Https
     RewriteCond %{HTTP:X-Forwarded-Proto} =http
     RewriteRule ^(.*) https://%{SERVER_NAME}/$1 [R,L=301]
+
+    # Vue3
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ /index.html [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -22,6 +30,8 @@
     RewriteRule ^ %1 [L,R=301]
 
     # Handle Front Controller...
+    RewriteCond %{REQUEST_URI} !^/api [NC]
+    RewriteCond %{REQUEST_URI} !^/admin [NC]
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
