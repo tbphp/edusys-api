@@ -4,13 +4,12 @@ namespace App\Models;
 
 use App\Enums\IdentityEnum;
 use DateTimeInterface;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
 abstract class AuthModel extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 

@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 
 class Teacher extends AuthModel
 {
+    use Notifiable;
+
     public function schools(): BelongsToMany
     {
         return $this->belongsToMany(School::class);
@@ -25,5 +28,10 @@ class Teacher extends AuthModel
     public function fans(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'follows')->withTimestamps();
+    }
+
+    public function routeNotificationForMail()
+    {
+        return $this->username;
     }
 }
