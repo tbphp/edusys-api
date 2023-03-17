@@ -86,7 +86,6 @@ class LineController extends Controller
             throw new CException('授权失败，请重试！');
         }
 
-        $hash = '';
         $tokens = [];
         $teachers = Teacher::where('line_id', $userId)->get();
         foreach ($teachers as $teacher) {
@@ -97,12 +96,11 @@ class LineController extends Controller
             $tokens[] = $this->_userToken($student, IdentityEnum::STUDENT);
         }
 
-        if (empty($tokens)) {
-            $hash = encrypt([
-                'time' => time(),
-                'line_id' => $userId,
-            ]);
-        }
+        // 绑定临时令牌
+        $hash = encrypt([
+            'time' => time(),
+            'line_id' => $userId,
+        ]);
 
         return compact('tokens', 'hash');
     }
