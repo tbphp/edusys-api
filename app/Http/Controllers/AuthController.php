@@ -43,11 +43,12 @@ class AuthController extends Controller
             throw new CException(ErrCode::UNAUTHORIZED, '用户名或密码错误');
         }
 
+        $tokenName = ucfirst($guard) . ' Token';
         // 删除旧token
-        $user->tokens()->delete();
+        $user->tokens()->where('name', $tokenName)->delete();
 
         // 创建用户token
-        $token = $user->createToken(ucfirst($guard) . ' Token', [$guard]);
+        $token = $user->createToken($tokenName, [$guard]);
 
         return [
             'token_type' => 'bearer',

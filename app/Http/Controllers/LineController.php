@@ -66,8 +66,9 @@ class LineController extends Controller
     protected function _userToken(AuthModel $user, int $identity): array
     {
         $guard = IdentityEnum::getDescription($identity);
-        $user->tokens()->delete();
-        $token = $user->createToken(ucfirst($guard) . ' Token', [$guard]);
+        $tokenName = ucfirst($guard) . ' Token';
+        $user->tokens()->where('name', $tokenName)->delete();
+        $token = $user->createToken($tokenName, [$guard]);
         return [
             'token_type' => 'bearer',
             'access_token' => $token->accessToken,
