@@ -13,7 +13,7 @@ class AddLineIdUserTables extends Migration
         });
 
         Schema::table('students', function (Blueprint $table) {
-            $table->string('line_id', 50)->default('')->index()->after('school_id')->comment('Line ID');
+            $table->string('line_id', 50)->nullable()->index()->after('school_id')->comment('Line ID');
         });
     }
 

@@ -55,6 +55,7 @@ class AuthController extends Controller
             'access_token' => $token->accessToken,
             'id' => $user->id,
             'name' => $user->name,
+            'bind_line' => (bool)$user->line_id,
         ];
     }
 

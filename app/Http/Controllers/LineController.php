@@ -12,6 +12,7 @@ use App\Models\Teacher;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
 
 class LineController extends Controller
 {
@@ -76,6 +77,7 @@ class LineController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'username' => $user->username,
+            'bind_line' => (bool)$user->line_id,
         ];
     }
 
@@ -96,11 +98,15 @@ class LineController extends Controller
             $tokens[] = $this->_userToken($student, IdentityEnum::STUDENT);
         }
 
-        // 绑定临时令牌
-        $hash = encrypt([
-            'time' => time(),
-            'line_id' => $userId,
-        ]);
+        if (empty($tokens)) {
+            // 绑定临时令牌
+            $hash = encrypt([
+                'time' => time(),
+                'line_id' => $userId,
+            ]);
+        } else {
+            $hash = '';
+        }
 
         return compact('tokens', 'hash');
     }
@@ -112,14 +118,22 @@ class LineController extends Controller
      */
     public function bind(LineBindRequest $request)
     {
-        // 如何hash，则解析
-        /** @var array $data */
-        $data = decrypt($request->input('hash'));
-        if (!isset($data['line_id'], $data['time'])) {
-            throw new CException('参数错误');
-        }
-        if (time() - $data['time'] > 300) {
-            throw new CException('绑定超时，请重试！');
+        if ($request->filled('code')) {
+            $lineId = $this->_userId($request->input('code'));
+            if (empty($lineId)) {
+                throw new CException('授权失败，请重试！');
+            }
+        } else {
+            // 如果是hash，则解析
+            /** @var array $data */
+            $data = decrypt($request->input('hash'));
+            if (!isset($data['line_id'], $data['time'])) {
+                throw new CException('参数错误');
+            }
+            if (time() - $data['time'] > 300) {
+                throw new CException('绑定超时，请重试！');
+            }
+            $lineId = $data['line_id'];
         }
 
         // 用户认证
@@ -135,9 +149,26 @@ class LineController extends Controller
         }
 
         try {
-            $user->update(['line_id' => $data['line_id']]);
+            $user->update(['line_id' => $lineId]);
         } catch (Exception $e) {
             throw new CException('绑定失败');
         }
+    }
+
+    public function unBind(Request $request)
+    {
+        // 用户认证
+        $guard = IdentityEnum::getDescription($request->input('identity'));
+        /** @var Teacher|Student $user */
+        $user = auth($guard)->authenticate();
+        if (!$user->tokenCan($guard)) {
+            throw new CException('无效的用户');
+        }
+
+        if (!$user->line_id) {
+            throw new CException('当前用户没有绑定，无法解绑！');
+        }
+
+        $user->update(['line_id' => null]);
     }
 }

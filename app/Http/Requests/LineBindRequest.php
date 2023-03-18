@@ -10,7 +10,8 @@ class LineBindRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'hash' => 'required|string',
+            'hash' => 'required_without:code|string|nullable',
+            'code' => 'required_without:hash|string|min:6|nullable',
             'identity' => 'required|integer|enum_value:' . IdentityEnum::class,
         ];
     }

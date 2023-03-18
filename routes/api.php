@@ -22,5 +22,6 @@ Route::post('pusher_callback', 'PusherController@callback');
 // line
 Route::group(['prefix' => 'line'], function () {
     Route::post('login', 'LineController@login');
-    Route::put('bind', 'LineController@bind')->middleware('auth');
+    Route::put('bind', 'LineController@bind');
+    Route::put('unbind', 'LineController@unBind');
 });
