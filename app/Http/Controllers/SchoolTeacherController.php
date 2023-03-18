@@ -81,8 +81,9 @@ class SchoolTeacherController extends Controller
             ->paginate(request('per_page'));
 
         // 判断是否关注教师
-        $result->map(function (Teacher $teacher) {
+        $result->map(function (Teacher $teacher) use ($student) {
             $teacher['is_followed'] = $teacher->fans->isNotEmpty();
+            $teacher['is_owner'] = $teacher->id === $student->school->owner_id;
             unset($teacher['fans']);
         });
 
