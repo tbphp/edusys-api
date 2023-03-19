@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Libs\Chat;
 use App\Models\OfflineMessage;
-use Illuminate\Database\Eloquent\Builder;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Pusher\Pusher;
@@ -40,14 +40,10 @@ class PusherController extends Controller
                     break;
                 case 'channel_vacated':
                     Log::info('用户下线：' . $event->channel);
-                    $this->_readMessage($event->channel, 0);
                     break;
                 case 'client_event':
                     if ($event->event === 'client-read') {
-                        $id = $event->data->id;
-                        if ($id > 0) {
-                            $this->_readMessage($event->channel, $event->data->id);
-                        }
+                        $this->_readMessage($event->channel, $event->data->id);
                     }
                     break;
             }
@@ -103,10 +99,16 @@ class PusherController extends Controller
             return;
         }
 
-        OfflineMessage::where('user_key', $userKey)
-            ->when($id > 0, function (Builder $builder) use ($id) {
-                $builder->where('id', '<=', $id);
-            })
-            ->delete();
+        if ($id <= 0) {
+            Log::error('id不合法');
+            return;
+        }
+
+        try {
+            OfflineMessage::where('user_key', $userKey)
+                ->where('id', '<=', $id)
+                ->delete();
+        } catch (Exception $e) {
+        }
     }
 }
