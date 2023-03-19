@@ -1,1 +1,0 @@
-import{g as s,h as t}from"./index.d2a08d1f.js";const c=s("app",()=>{const o=t();function r(e){o.value=e}return{curSchool:o,setCurSchool:r}},{persist:[{paths:["curSchool"],storage:sessionStorage}]});export{c as a};
