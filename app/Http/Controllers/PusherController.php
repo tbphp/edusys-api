@@ -42,9 +42,8 @@ class PusherController extends Controller
                     Log::info('用户下线：' . $event->channel);
                     break;
                 case 'client_event':
-                    Log::info('typeof:' . gettype($event->data));
                     if ($event->event === 'client-read') {
-                        $this->_readMessage($event->channel, $event->data['id']);
+                        $this->_readMessage($event->channel, $event->data);
                     }
                     break;
             }
@@ -87,10 +86,10 @@ class PusherController extends Controller
      * 消息已读
      *
      * @param string $channel
-     * @param int $id
+     * @param string $data
      * @return void
      */
-    protected function _readMessage(string $channel, int $id)
+    protected function _readMessage(string $channel, string $data)
     {
         // 获取userkey
         $arr = explode('.', $channel);
@@ -100,6 +99,8 @@ class PusherController extends Controller
             return;
         }
 
+        $json = json_decode($data, true);
+        $id = $json['id'] ?? 0;
         if ($id <= 0) {
             Log::error('id不合法');
             return;
