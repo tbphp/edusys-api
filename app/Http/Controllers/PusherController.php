@@ -42,8 +42,9 @@ class PusherController extends Controller
                     Log::info('用户下线：' . $event->channel);
                     break;
                 case 'client_event':
+                    Log::info('typeof:' . gettype($event->data));
                     if ($event->event === 'client-read') {
-                        $this->_readMessage($event->channel, $event->data->id);
+                        $this->_readMessage($event->channel, $event->data['id']);
                     }
                     break;
             }
