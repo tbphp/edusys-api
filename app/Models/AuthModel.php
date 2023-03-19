@@ -28,7 +28,7 @@ abstract class AuthModel extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'pivot',
+        'password', 'pivot', 'line_id'
     ];
 
     protected function serializeDate(DateTimeInterface $date): int

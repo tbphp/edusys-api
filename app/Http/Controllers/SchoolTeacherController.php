@@ -64,6 +64,10 @@ class SchoolTeacherController extends Controller
     {
         $this->_checkOwner($school);
 
+        if (Auth::id() === $teacher) {
+            throw new CException('不能移除自己');
+        }
+
         $school->teachers()->detach($teacher);
     }
 

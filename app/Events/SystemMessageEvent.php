@@ -15,6 +15,8 @@ class SystemMessageEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $id;
+
     /**
      * @var Teacher|Student
      */
@@ -24,8 +26,9 @@ class SystemMessageEvent implements ShouldBroadcastNow
 
     public $time;
 
-    public function __construct(AuthModel $to, string $message, int $time)
+    public function __construct(int $id, AuthModel $to, string $message, int $time)
     {
+        $this->id = $id;
         $this->to = $to;
         $this->message = $message;
         $this->time = $time;

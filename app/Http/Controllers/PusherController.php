@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Libs\Chat;
 use App\Models\OfflineMessage;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Pusher\Pusher;
@@ -40,6 +41,16 @@ class PusherController extends Controller
                 case 'channel_vacated':
                     Log::info('用户下线：' . $event->channel);
                     break;
+                case 'client_event':
+                    Log::info('client_event', [
+                        'channel' => $event->channel,
+                        'event' => $event->event,
+                        'data' => $event->data,
+                    ]);
+                    if ($event->event === 'client_read') {
+                        $this->_readMessage($event->channel, $event->data);
+                    }
+                    break;
             }
         }
     }
@@ -70,10 +81,38 @@ class PusherController extends Controller
                 $message->userTo,
                 $message->message,
                 $message->type,
-                false,
                 $message->created_at->timestamp
             );
             $message->delete();
         });
+    }
+
+    /**
+     * 消息已读
+     *
+     * @param string $channel
+     * @param array $data
+     * @return void
+     * @throws Exception
+     */
+    protected function _readMessage(string $channel, array $data)
+    {
+        // 获取userkey
+        $arr = explode('.', $channel);
+        $userKey = $arr[1] ?? '';
+        if (empty($userKey)) {
+            Log::error('channel不合法，无法获取userkey。channel:' . $channel);
+            return;
+        }
+
+        $id = $data['id'] ?? 0;
+        if (empty($id)) {
+            Log::error('数据不合法，无法获取id。');
+            return;
+        }
+
+        OfflineMessage::where('user_key', $userKey)
+            ->where('id', '<=', $id)
+            ->delete();
     }
 }

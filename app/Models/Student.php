@@ -11,7 +11,7 @@ class Student extends AuthModel
     use SoftDeletes;
 
     protected $hidden = [
-        'password', 'school_id', 'deleted_at', 'pivot',
+        'password', 'school_id', 'deleted_at', 'pivot', 'line_id'
     ];
 
     protected $casts = [

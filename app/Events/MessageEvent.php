@@ -15,8 +15,10 @@ class MessageEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $id;
+
     /**
-     * @var Teacher|Student|null
+     * @var array|null
      */
     public $from;
 
@@ -29,9 +31,19 @@ class MessageEvent implements ShouldBroadcastNow
 
     public $time;
 
-    public function __construct($from, AuthModel $to, string $message, int $time)
+    /**
+     * @param int $id
+     * @param Teacher|Student|null $from
+     * @param Teacher|Student $to
+     * @param string $message
+     * @param int $time
+     */
+    public function __construct(int $id, $from, AuthModel $to, string $message, int $time)
     {
-        $this->from = $from;
+        $this->id = $id;
+        if ($from) {
+            $this->from = $from->only(['identity', 'id', 'name']);
+        }
         $this->to = $to;
         $this->message = $message;
         $this->time = $time;
