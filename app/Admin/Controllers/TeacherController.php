@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Admin\Actions\Post\Message;
+use App\Models\School;
 use App\Models\Teacher;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -10,6 +11,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\Actions;
 use Encore\Admin\Grid\Filter;
 use Encore\Admin\Show;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class TeacherController extends AdminController
@@ -33,6 +35,14 @@ class TeacherController extends AdminController
         $grid->model()
             ->latest('id')
             ->withCount(['schools', 'ownerSchools', 'fans']);
+
+        $grid->model()->collection(function (Collection $schools) {
+            /** @var Teacher $school */
+            foreach ($schools as $school) {
+                $school->makeVisible('line_id');
+            }
+            return $schools;
+        });
 
         $grid->filter(function (Filter $filter) {
             $filter->like('name', __('Names'));

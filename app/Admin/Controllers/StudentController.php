@@ -12,6 +12,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\Actions;
 use Encore\Admin\Grid\Filter;
 use Encore\Admin\Show;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 
 class StudentController extends AdminController
@@ -33,6 +34,14 @@ class StudentController extends AdminController
         $grid = new Grid(new Student());
 
         $grid->model()->latest('id');
+
+        $grid->model()->collection(function (Collection $schools) {
+            /** @var Student $school */
+            foreach ($schools as $school) {
+                $school->makeVisible('line_id');
+            }
+            return $schools;
+        });
 
         $grid->filter(function (Filter $filter) {
             $filter->like('name', __('Names'));
