@@ -76,7 +76,8 @@ class PusherController extends Controller
                 $message->userTo,
                 $message->message,
                 $message->type,
-                $message->created_at->timestamp
+                $message->created_at->timestamp,
+                $message->userFrom
             );
             $message->delete();
         });
